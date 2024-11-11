@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empresa SA. de CV</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 0; }
+        .container { width: 50%; margin: auto; background-color: white; padding: 20px; margin-top: 50px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        h1 { color: #333; }
+        label { font-weight: bold; color: #555; }
+        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        input[type="button"] { background-color: #007bff; color: white; border: none; cursor: pointer; }
+        input[type="button"]:hover { background-color: #0056b3; }
+        form { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Empresa SA. de CV</h1>
+        <form id="encryptForm">
+            <h2>Cifrar Mensaje</h2>
+            <label>Clave (32 bytes en hexadecimal):</label><br>
+            <input type="text" id="keyEncrypt" required autocomplete="off"><br>
+            <label>Mensaje:</label><br>
+            <textarea id="messageEncrypt" required></textarea><br>
+            <input type="button" value="Cifrar" onclick="encryptMessage()">
+        </form>
+        
+        <form id="decryptForm">
+            <h2>Descifrar Mensaje</h2>
+            <label>Clave (32 bytes en hexadecimal):</label><br>
+            <input type="text" id="keyDecrypt" required autocomplete="off"><br>
+            <label>Mensaje cifrado (en hexadecimal):</label><br>
+            <textarea id="messageDecrypt" required></textarea><br>
+            <input type="button" value="Descifrar" onclick="decryptMessage()">
+        </form>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function encryptMessage() {
+            const keyHex = document.getElementById('keyEncrypt').value;
+            const message = document.getElementById('messageEncrypt').value;
+
+            try {
+                const key = CryptoJS.enc.Hex.parse(keyHex);
+                const iv = CryptoJS.lib.WordArray.random(16); // Generar IV aleatorio
+
+                const encrypted = CryptoJS.AES.encrypt(message, key, { iv: iv, padding: CryptoJS.pad.Pkcs7, mode: CryptoJS.mode.CBC });
+                const encryptedMessage = iv.concat(encrypted.ciphertext).toString(CryptoJS.enc.Hex);
+
+                document.getElementById('output').innerHTML = `<h1>Mensaje Cifrado:</h1><p>${encryptedMessage}</p>`;
+            } catch (e) {
+                document.getElementById('output').innerHTML = `<h1>Error:</h1><p>${e.message}</p>`;
+            }
+        }
+
+        function decryptMessage() {
+            const keyHex = document.getElementById('keyDecrypt').value;
+            const encryptedMessageHex = document.getElementById('messageDecrypt').value;
+
+            try {
+                const key = CryptoJS.enc.Hex.parse(keyHex);
+                const encryptedMessage = CryptoJS.enc.Hex.parse(encryptedMessageHex);
+                
+                const iv = CryptoJS.lib.WordArray.create(encryptedMessage.words.slice(0, 4)); // 16 bytes IV
+                const ciphertext = CryptoJS.lib.WordArray.create(encryptedMessage.words.slice(4)); // Resto es ciphertext
+
+                const decrypted = CryptoJS.AES.decrypt({ ciphertext: ciphertext }, key, { iv: iv, padding: CryptoJS.pad.Pkcs7, mode: CryptoJS.mode.CBC });
+                const decryptedMessage = decrypted.toString(CryptoJS.enc.Utf8);
+
+                document.getElementById('output').innerHTML = `<h1>Mensaje Descifrado:</h1><p>${decryptedMessage}</p>`;
+            } catch (e) {
+                document.getElementById('output').innerHTML = `<h1>Error:</h1><p>${e.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
