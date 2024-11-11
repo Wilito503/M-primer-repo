@@ -49,16 +49,16 @@
             const keyHex = document.getElementById('keyEncrypt').value;
             const message = document.getElementById('messageEncrypt').value;
 
+            if (!keyHex || keyHex.length !== 64) {
+                document.getElementById('output').innerHTML = '<h1>Error:</h1><p>La clave debe ser de 32 bytes en hexadecimal (64 caracteres).</p>';
+                return;
+            }
+
             try {
-                // Convertir la clave y el mensaje a WordArray
                 const key = CryptoJS.enc.Hex.parse(keyHex);
                 const iv = CryptoJS.lib.WordArray.random(16);
-
-                // Cifrar con AES en modo CBC
                 const encrypted = CryptoJS.AES.encrypt(message, key, { iv: iv, padding: CryptoJS.pad.Pkcs7, mode: CryptoJS.mode.CBC });
                 const encryptedMessage = iv.concat(encrypted.ciphertext).toString(CryptoJS.enc.Hex);
-
-                // Mostrar resultado
                 document.getElementById('output').innerHTML = `<h1>Mensaje Cifrado:</h1><p>${encryptedMessage}</p>`;
             } catch (e) {
                 document.getElementById('output').innerHTML = `<h1>Error:</h1><p>${e.message}</p>`;
@@ -70,20 +70,18 @@
             const keyHex = document.getElementById('keyDecrypt').value;
             const encryptedMessageHex = document.getElementById('messageDecrypt').value;
 
+            if (!keyHex || keyHex.length !== 64) {
+                document.getElementById('output').innerHTML = '<h1>Error:</h1><p>La clave debe ser de 32 bytes en hexadecimal (64 caracteres).</p>';
+                return;
+            }
+
             try {
-                // Convertir la clave y el mensaje cifrado a WordArray
                 const key = CryptoJS.enc.Hex.parse(keyHex);
                 const encryptedMessage = CryptoJS.enc.Hex.parse(encryptedMessageHex);
-
-                // Extraer el IV y el texto cifrado
                 const iv = CryptoJS.lib.WordArray.create(encryptedMessage.words.slice(0, 4));
                 const ciphertext = CryptoJS.lib.WordArray.create(encryptedMessage.words.slice(4));
-
-                // Descifrar
                 const decrypted = CryptoJS.AES.decrypt({ ciphertext: ciphertext }, key, { iv: iv, padding: CryptoJS.pad.Pkcs7, mode: CryptoJS.mode.CBC });
                 const decryptedMessage = decrypted.toString(CryptoJS.enc.Utf8);
-
-                // Mostrar resultado
                 document.getElementById('output').innerHTML = `<h1>Mensaje Descifrado:</h1><p>${decryptedMessage}</p>`;
             } catch (e) {
                 document.getElementById('output').innerHTML = `<h1>Error:</h1><p>${e.message}</p>`;
