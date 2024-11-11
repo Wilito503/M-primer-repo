@@ -1,0 +1,7 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/Will/OneDrive/Escritorio/codigos python/media/videos/elliptic_curve_torus_3D/480p15/partial_movie_files/EllipticCurveOnTorus/3900066288_1154796237_223132457.mp4'
+file 'file:C:/Users/Will/OneDrive/Escritorio/codigos python/media/videos/elliptic_curve_torus_3D/480p15/partial_movie_files/EllipticCurveOnTorus/2460363147_3438219438_2219935067.mp4'
+file 'file:C:/Users/Will/OneDrive/Escritorio/codigos python/media/videos/elliptic_curve_torus_3D/480p15/partial_movie_files/EllipticCurveOnTorus/2460363147_962886289_3899414505.mp4'
+file 'file:C:/Users/Will/OneDrive/Escritorio/codigos python/media/videos/elliptic_curve_torus_3D/480p15/partial_movie_files/EllipticCurveOnTorus/2460363147_3494816192_500498545.mp4'
+file 'file:C:/Users/Will/OneDrive/Escritorio/codigos python/media/videos/elliptic_curve_torus_3D/480p15/partial_movie_files/EllipticCurveOnTorus/4108041912_2125241585_270695882.mp4'
+file 'file:C:/Users/Will/OneDrive/Escritorio/codigos python/media/videos/elliptic_curve_torus_3D/480p15/partial_movie_files/EllipticCurveOnTorus/2200182548_3494816192_2351049415.mp4'
